@@ -7,3 +7,34 @@
   image-rendering: pixelated; /* Para Chrome/Edge */
   image-rendering: crisp-edges; /* Para Firefox */
 }
+
+@keyframes yellow-pulse {
+  0%, 100% {
+    /* Al principio y al final: Sin brillo (o muy tenue) */
+    filter: drop-shadow(0 0 0 rgba(215, 153, 33, 0));
+  }
+  50% {
+    /* A la mitad: Brillo amarillo visible */
+    /* El código RGB de #d79921 es 215, 153, 33 */
+    filter: 
+      drop-shadow(0 0 3px rgba(19, 144, 172, 1)) 
+      drop-shadow(0 0 6px rgba(19, 144, 172, 0.6));
+  }
+}
+
+/* La clase que usaremos en React */
+.interactive-glow {
+  /* Ejecuta la animación 'yellow-pulse' cada 3 segundos, infinitamente */
+  animation: yellow-pulse 3s ease-in-out infinite;
+}
+
+.glow-on-hover {
+  transition: filter 0.3s ease; /* Transición suave al entrar/salir */
+}
+
+.glow-on-hover:hover {
+  /* AQUÍ ESTÁ EL TRUCO: Apilamos 3 sombras para máxima potencia */
+  filter: 
+    drop-shadow(0 0 2px #1390ac)   /* 1. Borde nítido pegado al objeto */
+    drop-shadow(0 0 5px #1390ac)  /* 2. Brillo medio intenso */
+}
