@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Esto asegura que tus imágenes no se vean borrosas al estirarse */
+.pixel-art {
+  image-rendering: pixelated; /* Para Chrome/Edge */
+  image-rendering: crisp-edges; /* Para Firefox */
+}
