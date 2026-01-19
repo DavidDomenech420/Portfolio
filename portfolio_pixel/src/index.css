@@ -2,6 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Importamos fuente de texto pixelart VT323 */
+@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+
 /* Esto asegura que tus imágenes no se vean borrosas al estirarse */
 .pixel-art {
   image-rendering: pixelated; /* Para Chrome/Edge */
@@ -37,4 +40,19 @@
   filter: 
     drop-shadow(0 0 2px #1390ac)   /* 1. Borde nítido pegado al objeto */
     drop-shadow(0 0 5px #1390ac)  /* 2. Brillo medio intenso */
+}
+
+/* Scrollbar estilo Gruvbox */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #282828; 
+}
+::-webkit-scrollbar-thumb {
+  background: #504945; 
+  border: 1px solid #282828;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #7e638e; 
 }
