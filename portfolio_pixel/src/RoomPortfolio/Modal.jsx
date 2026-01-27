@@ -19,7 +19,7 @@ export default function Modal({
         className="
           relative w-full max-w-5xl bg-[#282828] 
           border-4 border-[#7e638e] 
-          text-[#ebdbb2] p-6 shadow-2xl
+          text-[#789949] p-6 shadow-2xl
           font-pixel text-xl
         "
       >

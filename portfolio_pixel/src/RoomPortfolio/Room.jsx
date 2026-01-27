@@ -85,15 +85,106 @@ export default function Room() {
         {/* --- SISTEMA DE VENTANAS (MODALES) --- */}
       
         {/* VENTANA SOBRE MÍ */}
-        <Modal 
-          isOpen={activeSection === 'Sobre Mi'} 
-          onClose={() => setActiveSection(null)} 
-          title="Quién Soy"
-        >
-          <p className="mb-4">¡Hola! Soy David, un desarrollador apasionado por el Pixel Art.</p>
-          <p>Actualmente estudio Ingeniería y me encanta React.</p>
-          <p className="text-[#b58fb6] mt-4">Skills: HTML, CSS, JS, React, Tailwind.</p>
-        </Modal>
+      <Modal 
+        isOpen={activeSection === 'Sobre Mi'} 
+        onClose={() => setActiveSection(null)} 
+        title="Ficha de Personaje"
+      >
+        <div className="flex flex-col gap-6">
+          
+          {/* 1. CABECERA: Foto*/}
+          <div className="flex flex-col md:flex-row gap-6 items-center border-b border-[#504945] pb-6">
+            {/* Foto de Perfil (Pixelada) */}
+            <div className="w-32 h-32 shrink-0 border-4 border-[#b58fb6] shadow-lg overflow-hidden bg-[#32302f]">
+               <img src="avatar.png" alt="Avatar" className="w-full h-full object-cover pixel-art" />
+            </div>
+
+            <div className="text-center md:text-left">
+               <h3 className="text-2xl text-[#b58fb6] mb-2">David Domenech Aguilera</h3>
+               <p className="text-[#a89984] text-lg leading-relaxed">
+                 Estudiante de <span className="text-[#7e638e]">Ingeniería Informática</span> con base sólida en desarrollo Web (DAW) y Móvil (DAM). <br/>
+                 Mi objetivo es pasar de ideas interesantes y alocadas a programas interactivos y funcionales.
+               </p>
+            </div>
+
+          </div>
+
+          {/* 2. SKILLS (HARD & SOFT) */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            
+            {/* Columna Izquierda: Tech Stack */}
+            <div className="bg-[#3c3836] p-4 border border-[#504945]">
+              <h4 className="text-[#b58fb6] text-xl mb-3 border-b border-[#504945] pb-1">Hard Skills</h4>
+              <h5 className="text-[#7e638e] text-lg mb-1 pb-0.5">Frameworks</h5>
+              <div className="flex flex-wrap gap-1">
+                {/* Lista de tecnologías como etiquetas */}
+                {['Angular', 'React', 'Tailwind', 'Django', 'Selenium', 'Appium'].map((skill) => (
+                  <span key={skill} className="bg-[#282828] text-[#789949] px-2 py-0.5 text-sm border border-[#504945]">
+                    {skill}
+                  </span>
+                ))}
+              </div>
+              <h5 className="text-[#7e638e] text-lg mt-1 mb-1 pb-0.5">FrontEnd</h5>
+              <div className="flex flex-wrap gap-1">
+                {/* Lista de tecnologías como etiquetas */}
+                {['HTML', 'CSS', 'JavaScript', 'TypeScript'].map((skill) => (
+                  <span key={skill} className="bg-[#282828] text-[#789949] px-2 py-0.5 text-sm border border-[#504945]">
+                    {skill}
+                  </span>
+                ))}
+              </div>
+              <h5 className="text-[#7e638e] text-lg mt-1 mb-1 pb-0.5">BackEnd</h5>
+              <div className="flex flex-wrap gap-1">
+                {/* Lista de tecnologías como etiquetas */}
+                {['Python', 'Java', 'C', 'Kotlin', 'PostgreSQL', 'FireBase'].map((skill) => (
+                  <span key={skill} className="bg-[#282828] text-[#789949] px-2 py-0.5 text-sm border border-[#504945]">
+                    {skill}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            {/* Columna Derecha: Soft Skills */}
+            <div className="bg-[#3c3836] p-4 border border-[#504945]">
+              <h4 className="text-[#b58fb6] text-xl mb-3 border-b border-[#504945] pb-1">Soft Skills</h4>
+              <ul className="list-disc list-inside text-[#a89984] space-y-1">
+                <li>Trabajo en Equipo (Agile/Scrum)</li>
+                <li>Aprendizaje Autodidacta</li>
+                <li>Comunicación Efectiva</li>
+                <li>Resolución de problemas</li>
+                <li>Pensamiento Analítico</li>
+              </ul>
+            </div>
+          </div>
+
+          {/* 3. PERSONAL / HOBBIES (El toque humano) */}
+          <div className="bg-[#32302f] p-4 border-l-4 border-[#b58fb6]">
+            <h4 className="text-[#b58fb6] text-xl mb-2">Fuera del Código</h4>
+            <p className="text-[#a89984]">
+              Como se puede observar paso parte de mi tiempo escuchando música, jugando a gran variedad de videojuegos y también leyendo diferentes libros de fantasía. <br /> <br />
+              Dentro del mundo de la música un cantante que me esta gustando mucho es Djo con su nuevo disco <span className="text-[#789949]">The Crux Deluxe</span>. <br /> <br />
+              En la parte de videojuegos me encantan los indie como <span className="text-[#789949]">Hollow Knight</span> y <span className="text-[#789949]">Clair Obscur: Expedition 33</span>. <br /> <br />
+              Por ultimo los libros que mas leo son los de <span className="text-[#789949]">Brandon Sanderson</span> ya que fue el que hizo que me enamorara de las obras literarias.
+            </p>
+          </div>
+
+          {/* 4. CALL TO ACTION (Descargar CV) */}
+          <div className="flex justify-center mt-2">
+            <a 
+              href="/cv.pdf" 
+              download 
+              className="
+                bg-[#7e638e] text-[#282828] font-bold py-2 px-6 text-xl 
+                hover:bg-[#b58fb6] hover:scale-105 transition-transform
+                flex items-center gap-2 shadow-lg
+              "
+            >
+              <span>💾</span> DESCARGAR CV
+            </a>
+          </div>
+
+        </div>
+      </Modal>
 
         {/* VENTANA PROYECTOS */}
         <Modal 
@@ -128,8 +219,8 @@ export default function Room() {
                     <div className="pt-4 border-t border-[#504945]/50 flex justify-between items-center mt-auto">
                       {/* ZONA IZQUIERDA: Tags */}
                       <div className="flex flex-wrap gap-2">
-                        <span className="bg-[#504945] text-[#ebdbb2] text-sm px-2 py-1 rounded border border-[#282828]">React</span>
-                        <span className="bg-[#504945] text-[#ebdbb2] text-sm px-2 py-1 rounded border border-[#282828]">Tailwind</span>
+                        <span className="bg-[#504945] text-[#789949] text-sm px-2 py-1 rounded border border-[#282828]">React</span>
+                        <span className="bg-[#504945] text-[#789949] text-sm px-2 py-1 rounded border border-[#282828]">Tailwind</span>
                       </div>
 
                       {/* ZONA DERECHA: Icono GitHub */}
@@ -190,9 +281,9 @@ export default function Room() {
                   
                       {/* ZONA IZQUIERDA: Tags */}
                       <div className="flex flex-wrap gap-2">
-                        <span className="bg-[#504945] text-[#ebdbb2] text-sm px-2 py-1 rounded border border-[#282828]">Angular</span>
-                        <span className="bg-[#504945] text-[#ebdbb2] text-sm px-2 py-1 rounded border border-[#282828]">Django</span>
-                        <span className="bg-[#504945] text-[#ebdbb2] text-sm px-2 py-1 rounded border border-[#282828]">PostgreSQL</span>
+                        <span className="bg-[#504945] text-[#789949] text-sm px-2 py-1 rounded border border-[#282828]">Angular</span>
+                        <span className="bg-[#504945] text-[#789949] text-sm px-2 py-1 rounded border border-[#282828]">Django</span>
+                        <span className="bg-[#504945] text-[#789949] text-sm px-2 py-1 rounded border border-[#282828]">PostgreSQL</span>
                       </div>
 
                       {/* ZONA DERECHA: Icono GitHub */}

@@ -1,9 +1,9 @@
+/* @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap'); */
+/* Importamos fuente de texto pixelart VT323 */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Importamos fuente de texto pixelart VT323 */
-@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
 
 /* Esto asegura que tus imágenes no se vean borrosas al estirarse */
 .pixel-art {
