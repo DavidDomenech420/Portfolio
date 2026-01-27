@@ -95,15 +95,15 @@ export default function Room() {
           {/* 1. CABECERA: Foto*/}
           <div className="flex flex-col md:flex-row gap-6 items-center border-b border-[#504945] pb-6">
             {/* Foto de Perfil (Pixelada) */}
-            <div className="w-32 h-32 shrink-0 border-4 border-[#b58fb6] shadow-lg overflow-hidden bg-[#32302f]">
+            <div className="w-40 h-40 shrink-0 border-4 border-[#b58fb6] shadow-lg overflow-hidden bg-[#32302f]">
                <img src="avatar.png" alt="Avatar" className="w-full h-full object-cover pixel-art" />
             </div>
 
             <div className="text-center md:text-left">
                <h3 className="text-2xl text-[#b58fb6] mb-2">David Domenech Aguilera</h3>
                <p className="text-[#a89984] text-lg leading-relaxed">
-                 Estudiante de <span className="text-[#7e638e]">Ingeniería Informática</span> con base sólida en desarrollo Web (DAW) y Móvil (DAM). <br/>
-                 Mi objetivo es pasar de ideas interesantes y alocadas a programas interactivos y funcionales.
+                 Desarrollador Full Stack con visión de Ingeniero. Me especializo en cerrar la brecha entre la lógica del backend y la magia del frontend. Actualmente cursando <span className="text-[#789949]">Ingeniería Informática</span> tras dominar el desarrollo Web y Móvil. <br/> <br />
+                 Busco un entorno dinámico donde la proactividad se premie y donde pueda evolucionar de Junior a Senior enfrentándome a problemas reales de negocio.
                </p>
             </div>
 
