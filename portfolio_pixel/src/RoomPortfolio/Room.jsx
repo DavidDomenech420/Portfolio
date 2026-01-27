@@ -346,7 +346,11 @@ export default function Room() {
           title="Redes & Contacto"
         >
           <div className="flex flex-col gap-8">
-
+            <div className="text-center md:text-left">
+                <p className="text-[#a89984] text-lg leading-relaxed">
+                  Si buscas un perfil híbrido para subir de nivel tu proyecto, contáctame. ¡Contestare lo mas rapido que pueda!
+                </p>
+              </div>
             {/* 1. REDES SOCIALES */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 
