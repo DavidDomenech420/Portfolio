@@ -4,7 +4,8 @@ export default function Modal({
     isOpen, 
     onClose, 
     title, 
-    children 
+    children ,
+    noScroll = false
 }) {
   // Si la ventana no está abierta, no renderizamos nada (return null)
   if (!isOpen) return null;
@@ -40,7 +41,7 @@ export default function Modal({
         </div>
 
         {/* CONTENIDO DINÁMICO (Lo que pasemos dentro de la etiqueta) */}
-        <div className="max-h-[60vh] overflow-y-auto pr-2 custom-scrollbar">
+        <div className={`max-h-[60vh] ${noScroll ? 'overflow-hidden flex flex-col justify-center' : 'overflow-y-auto'} pr-2 custom-scrollbar`}>
           {children}
         </div>
 

@@ -1,7 +1,83 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import InteractiveItem from "./InteractiveItem";
 import Modal from "./Modal";
+
+// LISTA DE CANCIONES
+const PLAYLIST = [
+  {
+    title: "Heart To Heart",
+    artist: "Mac DeMarco",
+    src: "/music/heart_to_heart.mp3",
+    cover: "music_cover.jpg"
+  },
+  {
+    title: "Rises the Moon",
+    artist: "Liana Flores",
+    src: "/music/rises_the_moon.mp3",
+    cover: "music_cover.jpg"
+  },
+  {
+    title: "505",
+    artist: "Artic Monkeys",
+    src: "/music/505.mp3",
+    cover: "music_cover.jpg"
+  },
+  {
+    title: "Chandelier",
+    artist: "Will Paquin",
+    src: "/music/Chandelier.mp3",
+    cover: "music_cover.jpg"
+  },
+  {
+    title: "Looking Out for You",
+    artist: "Joy Again",
+    src: "/music/Looking_out_for_you.mp3",
+    cover: "music_cover.jpg"
+  },
+  {
+    title: "Karma Police",
+    artist: "Radiohead",
+    src: "/music/Karma_police.mp3",
+    cover: "music_cover.jpg"
+  },
+  {
+    title: "in the pool",
+    artist: "Kensuke Ushio",
+    src: "/music/In_the_pool.mp3",
+    cover: "music_cover.jpg"
+  },
+  {
+    title: "Radio",
+    artist: "Bershy",
+    src: "/music/Radio.mp3",
+    cover: "music_cover.jpg"
+  },
+  {
+    title: "White Palace",
+    artist: "Christopher Larkin",
+    src: "/music/White_palace.mp3",
+    cover: "music_cover.jpg"
+  },
+  {
+    title: "Gustave",
+    artist: "Lorien Testard",
+    src: "/music/Gustave.mp3",
+    cover: "music_cover.jpg"
+  },
+  {
+    title: "Moth To a Flame",
+    artist: "Swedish House Mafia, The Weeknd",
+    src: "/music/Moth_to_a_flame.mp3",
+    cover: "music_cover.jpg"
+  },
+  {
+    title: "Carry The Name",
+    artist: "Djo",
+    src: "/music/Carry_the_name.mp3",
+    cover: "music_cover.jpg"
+  },
+];
 
 export default function Room() {
 
@@ -9,6 +85,7 @@ export default function Room() {
   const [hoveredItem, setHoveredItem] = useState(null);
   const [activeSection, setActiveSection] = useState(null);
   const [copied, setCopied] = useState(false)
+  const [showWelcome, setShowWelcome] = useState(true);
   const email = "daviddomenech420@gmail.com";
 
   const handleCopyEmail = () => {
@@ -16,6 +93,63 @@ export default function Room() {
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
+
+  // Parte de Audio
+  // --- SISTEMA DE AUDIO ---
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [volume, setVolume] = useState(0.5);
+  const [currentTrackIndex, setCurrentTrackIndex] = useState(0); // Empezamos por la 0
+
+  // Creamos el objeto Audio una sola vez
+  const [bgMusic] = useState(new Audio());
+
+  useEffect(() => {
+    // 1. Cargamos la  ruta
+    bgMusic.src = PLAYLIST[currentTrackIndex].src;
+    bgMusic.loop = false;
+    bgMusic.volume = volume;
+
+    // 2. Si ya estaba sonando, que la nueva arranque sola
+    if (isPlaying) {
+      bgMusic.play().catch(e => console.log("Audio play error:", e));
+    }
+  }, [currentTrackIndex, bgMusic]); // Se ejecuta cuando cambia el índice
+
+  // Gestionar PLAY / PAUSE 
+  useEffect(() => {
+    if (isPlaying) {
+      bgMusic.play().catch(e => console.log("Audio play error:", e));
+    } else {
+      bgMusic.pause();
+    }
+  }, [isPlaying, bgMusic]);
+
+  //Gestionar VOLUMEN
+  useEffect(() => {
+    bgMusic.volume = volume;
+  }, [volume, bgMusic]);
+
+  // FUNCIONES PARA LOS BOTONES
+  const handleNext = () => {
+    setCurrentTrackIndex((prev) => (prev + 1) % PLAYLIST.length);
+  };
+
+  const handlePrev = () => {
+    setCurrentTrackIndex((prev) => (prev - 1 + PLAYLIST.length) % PLAYLIST.length);
+  };
+
+  useEffect(() => {
+    const handleAutoNext = () => {
+      setCurrentTrackIndex((prevIndex) => (prevIndex + 1) % PLAYLIST.length);
+    };
+
+    bgMusic.addEventListener('ended', handleAutoNext);
+
+    // Limpieza:
+    return () => {
+      bgMusic.removeEventListener('ended', handleAutoNext);
+    };
+  }, [bgMusic]);
 
   return (
     // Un contenedor negro que ocupa toda la pantalla, para hacerlo de fondo
@@ -53,11 +187,11 @@ export default function Room() {
 
         {/* EL TOCADISCOS */}
         <InteractiveItem
-          name="Spotify"
+          name="Musica"
           imagePath="./tocadiscos.png"
           position={{ top: '42.6%', left: '27%', width: '8%', height: '6.5%' }}
           setHoveredItem={setHoveredItem}
-          onClick={() => alert("¡Aquí se abrirá la ventana de Spotify!")}
+          onClick={() => setActiveSection('Musica')}
           zindex={2}
         />
 
@@ -347,10 +481,10 @@ export default function Room() {
         >
           <div className="flex flex-col gap-8">
             <div className="text-center md:text-left">
-                <p className="text-[#a89984] text-lg leading-relaxed">
-                  Si buscas un perfil híbrido para subir de nivel tu proyecto, contáctame. ¡Contestare lo mas rapido que pueda!
-                </p>
-              </div>
+              <p className="text-[#a89984] text-lg leading-relaxed">
+                Si buscas un perfil híbrido para subir de nivel tu proyecto, contáctame. ¡Contestare lo mas rapido que pueda!
+              </p>
+            </div>
             {/* 1. REDES SOCIALES */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 
@@ -454,161 +588,379 @@ export default function Room() {
         </Modal>
 
         {/* VENTANA TRAYECTORIA */}
-      <Modal 
-        isOpen={activeSection === 'Estudios y Experiencia'} 
-        onClose={() => setActiveSection(null)} 
-        title="Historial de Misiones"
-      >
-        <div className="flex flex-col gap-8">
+        <Modal
+          isOpen={activeSection === 'Estudios y Experiencia'}
+          onClose={() => setActiveSection(null)}
+          title="Historial de Misiones"
+        >
+          <div className="flex flex-col gap-8">
 
-          {/* SECCIÓN 1: EXPERIENCIA LABORAL (Timeline) */}
-          <div>
-            <h3 className="text-[#b58fb6] text-xl font-bold mb-4 flex items-center gap-2">
-              <span>⚔️</span> Misiones Principales
-            </h3>
-            
-            {/* Contenedor de la línea de tiempo */}
-            <div className="border-l-2 border-[#504945] ml-3 space-y-8">
-              
-              {/* TRABAJO 1 */}
-              <div className="relative pl-8">
-                {/* El punto en la línea */}
-                <div className="absolute -left-[9px] top-1 w-4 h-4 bg-[#7e638e] rounded-full border-2 border-[#282828]"></div>
-                
-                <h4 className="text-[#ebdbb2] font-bold text-lg">QA Tester (Practicas DAM)</h4>
-                <div className="text-[#789949] text-sm mb-1">Empresa Inetum Tarragona | 2023 - 2024</div>
-                <p className="text-[#a89984] text-sm">
-                  Desarrollo de diferentes pruebas de Testeo usando Selenium con Java, se creo un "framework" propio para facilitar la ejecucion y comprovacion
-                  de los diferentes Tests.
-                  Tambien se realizo algun proyecto pequeño Full-Stack
-                </p>
-                {/* Etiquetas de tecnologías usadas */}
-                <div className="flex gap-2 mt-2">
-                  <span className="text-xs bg-[#32302f] px-2 py-0.5 rounded text-[#ebdbb2] border border-[#504945]">Selenium</span>
-                  <span className="text-xs bg-[#32302f] px-2 py-0.5 rounded text-[#ebdbb2] border border-[#504945]">Java</span>
-                  <span className="text-xs bg-[#32302f] px-2 py-0.5 rounded text-[#ebdbb2] border border-[#504945]">Appium</span>
+            {/* SECCIÓN 1: EXPERIENCIA LABORAL (Timeline) */}
+            <div>
+              <h3 className="text-[#b58fb6] text-xl font-bold mb-4 flex items-center gap-2">
+                <span>⚔️</span> Misiones Principales
+              </h3>
+
+              {/* Contenedor de la línea de tiempo */}
+              <div className="border-l-2 border-[#504945] ml-3 space-y-8">
+
+                {/* TRABAJO 1 */}
+                <div className="relative pl-8">
+                  {/* El punto en la línea */}
+                  <div className="absolute -left-[9px] top-1 w-4 h-4 bg-[#7e638e] rounded-full border-2 border-[#282828]"></div>
+
+                  <h4 className="text-[#ebdbb2] font-bold text-lg">QA Tester (Practicas DAM)</h4>
+                  <div className="text-[#789949] text-sm mb-1">Empresa Inetum Tarragona | 2023 - 2024</div>
+                  <p className="text-[#a89984] text-sm">
+                    Desarrollo de diferentes pruebas de Testeo usando Selenium con Java, se creo un "framework" propio para facilitar la ejecucion y comprovacion
+                    de los diferentes Tests.
+                    Tambien se realizo algun proyecto pequeño Full-Stack
+                  </p>
+                  {/* Etiquetas de tecnologías usadas */}
+                  <div className="flex gap-2 mt-2">
+                    <span className="text-xs bg-[#32302f] px-2 py-0.5 rounded text-[#ebdbb2] border border-[#504945]">Selenium</span>
+                    <span className="text-xs bg-[#32302f] px-2 py-0.5 rounded text-[#ebdbb2] border border-[#504945]">Java</span>
+                    <span className="text-xs bg-[#32302f] px-2 py-0.5 rounded text-[#ebdbb2] border border-[#504945]">Appium</span>
+                  </div>
                 </div>
-              </div>
 
-              {/* TRABAJO 2 */}
-              <div className="relative pl-8">
-                <div className="absolute -left-[9px] top-1 w-4 h-4 bg-[#7e638e] rounded-full border-2 border-[#282828]"></div>
-                
-                <h4 className="text-[#ebdbb2] font-bold text-lg">Gestion Tienda Online (Prácticas DAW)</h4>
-                <div className="text-[#789949] text-sm mb-1">Regalogar Reus | 2022</div>
-                <p className="text-[#a89984] text-sm">
-                  Mantenimiento de componentes UI y gestion de una tienda Online de electrodomesticos
-                </p>
-              </div>
+                {/* TRABAJO 2 */}
+                <div className="relative pl-8">
+                  <div className="absolute -left-[9px] top-1 w-4 h-4 bg-[#7e638e] rounded-full border-2 border-[#282828]"></div>
 
+                  <h4 className="text-[#ebdbb2] font-bold text-lg">Gestion Tienda Online (Prácticas DAW)</h4>
+                  <div className="text-[#789949] text-sm mb-1">Regalogar Reus | 2022</div>
+                  <p className="text-[#a89984] text-sm">
+                    Mantenimiento de componentes UI y gestion de una tienda Online de electrodomesticos
+                  </p>
+                </div>
+
+              </div>
             </div>
-          </div>
 
-          <hr className="border-[#504945]" />
+            <hr className="border-[#504945]" />
 
-          {/* SECCIÓN 2: ESTUDIOS (Grid de Cartas) */}
-          <div>
-            <h3 className="text-[#b58fb6] text-xl font-bold mb-4 flex items-center gap-2">
-              <span>📜</span> Entrenamiento
-            </h3>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              
-              {/* ESTUDIO 1 */}
-              <div className="bg-[#32302f] p-4 border-l-4 border-[#abcf5f]">
-                <div className="text-[#ebdbb2] font-bold">Grado en Ingeniería Informática</div>
-                <div className="text-sm text-[#789949]">Universidad Rovira Virgili (Tarragona) | En curso</div>
-                <div className="text-xs text-[#a89984] mt-1">Especialidad en Ingeniería del Software.</div>
+            {/* SECCIÓN 2: ESTUDIOS (Grid de Cartas) */}
+            <div>
+              <h3 className="text-[#b58fb6] text-xl font-bold mb-4 flex items-center gap-2">
+                <span>📜</span> Entrenamiento
+              </h3>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+                {/* ESTUDIO 1 */}
+                <div className="bg-[#32302f] p-4 border-l-4 border-[#abcf5f]">
+                  <div className="text-[#ebdbb2] font-bold">Grado en Ingeniería Informática</div>
+                  <div className="text-sm text-[#789949]">Universidad Rovira Virgili (Tarragona) | En curso</div>
+                  <div className="text-xs text-[#a89984] mt-1">Especialidad en Ingeniería del Software.</div>
+                </div>
+
+                {/* ESTUDIO 2 */}
+                <div className="bg-[#32302f] p-4 border-l-4 border-[#7e638e]">
+                  <div className="text-[#ebdbb2] font-bold">CFGS Desarrollo Multiplataforma (DAM)</div>
+                  <div className="text-sm text-[#789949]">Instituto Baix Camp (Reus) | 2022 - 2024</div>
+                  <div className="text-xs text-[#a89984] mt-1">Nota media: 8.3</div>
+                </div>
+
+                {/* ESTUDIO 3 */}
+                <div className="bg-[#32302f] p-4 border-l-4 border-[#7e638e]">
+                  <div className="text-[#ebdbb2] font-bold">CFGS Desarrollo Web (DAW)</div>
+                  <div className="text-sm text-[#789949]">Instituto Baix Camp (Reus) | 2021 - 2023</div>
+                  <div className="text-xs text-[#a89984] mt-1">Nota media: 7.7</div>
+                </div>
+
               </div>
-
-              {/* ESTUDIO 2 */}
-              <div className="bg-[#32302f] p-4 border-l-4 border-[#7e638e]">
-                <div className="text-[#ebdbb2] font-bold">CFGS Desarrollo Multiplataforma (DAM)</div>
-                <div className="text-sm text-[#789949]">Instituto Baix Camp (Reus) | 2022 - 2024</div>
-                <div className="text-xs text-[#a89984] mt-1">Nota media: 8.3</div>
-              </div>
-
-              {/* ESTUDIO 3 */}
-              <div className="bg-[#32302f] p-4 border-l-4 border-[#7e638e]">
-                <div className="text-[#ebdbb2] font-bold">CFGS Desarrollo Web (DAW)</div>
-                <div className="text-sm text-[#789949]">Instituto Baix Camp (Reus) | 2021 - 2023</div>
-                <div className="text-xs text-[#a89984] mt-1">Nota media: 7.7</div>
-              </div>
-
             </div>
-          </div>
 
-          <hr className="border-[#504945]" />
+            <hr className="border-[#504945]" />
 
-          {/* SECCIÓN 3: EVENTOS / HACKATHONS (Estilo Polaroid o Badge) */}
-          <div>
-            <h3 className="text-[#b58fb6] text-xl font-bold mb-4 flex items-center gap-2">
-              <span>🏆</span> Eventos y Logros
-            </h3>
+            {/* SECCIÓN 3: EVENTOS / HACKATHONS (Estilo Polaroid o Badge) */}
+            <div>
+              <h3 className="text-[#b58fb6] text-xl font-bold mb-4 flex items-center gap-2">
+                <span>🏆</span> Eventos y Logros
+              </h3>
 
-            <div className="flex flex-wrap gap-3">
-              
-              {/* EVENTO 1 */}
-              <div className="group relative bg-[#3c3836] p-3 border border-[#504945] hover:border-[#7e638e] transition-colors w-full md:w-[48%]">
-                <div className="flex justify-between items-start">
+              <div className="flex flex-wrap gap-3">
+
+                {/* EVENTO 1 */}
+                <div className="group relative bg-[#3c3836] p-3 border border-[#504945] hover:border-[#7e638e] transition-colors w-full md:w-[48%]">
+                  <div className="flex justify-between items-start">
                     <div>
-                        <div className="text-[#ebdbb2] font-bold">Hackathon HackEPS 2025</div>
-                        <div className="text-xs text-[#789949]">Participante • Lleida</div>
+                      <div className="text-[#ebdbb2] font-bold">Hackathon HackEPS 2025</div>
+                      <div className="text-xs text-[#789949]">Participante • Lleida</div>
                     </div>
                     <span className="text-2xl">💻​</span>
-                </div>
-                <p className="text-xs text-[#ebdbb2] mt-2">
+                  </div>
+                  <p className="text-xs text-[#ebdbb2] mt-2">
                     Creamos una app de gestión del transporte de cerdos con los mataderos y granjas.
-                </p>
-              </div>
+                  </p>
+                </div>
 
-              {/* EVENTO 1 */}
-              <div className="group relative bg-[#3c3836] p-3 border border-[#504945] hover:border-[#7e638e] transition-colors w-full md:w-[48%]">
-                <div className="flex justify-between items-start">
+                {/* EVENTO 1 */}
+                <div className="group relative bg-[#3c3836] p-3 border border-[#504945] hover:border-[#7e638e] transition-colors w-full md:w-[48%]">
+                  <div className="flex justify-between items-start">
                     <div>
-                        <div className="text-[#ebdbb2] font-bold">Hackathon StrongHoldPI 2025</div>
-                        <div className="text-xs text-[#789949]">Participante • Tarragona</div>
+                      <div className="text-[#ebdbb2] font-bold">Hackathon StrongHoldPI 2025</div>
+                      <div className="text-xs text-[#789949]">Participante • Tarragona</div>
                     </div>
                     <span className="text-2xl">💻​</span>
-                </div>
-                <p className="text-xs text-[#ebdbb2] mt-2">
+                  </div>
+                  <p className="text-xs text-[#ebdbb2] mt-2">
                     Hicimos un capture the flag utilizando Rasperris.
-                </p>
+                  </p>
+                </div>
+
+                {/* EVENTO 2 */}
+                <div className="group relative bg-[#3c3836] p-3 border border-[#504945] hover:border-[#7e638e] transition-colors w-full md:w-[48%]">
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <div className="text-[#ebdbb2] font-bold">Talent Arena 2025</div>
+                      <div className="text-xs text-[#789949]">Asistente • Presencial</div>
+                    </div>
+                    <span className="text-2xl">🎫</span>
+                  </div>
+                  <p className="text-xs text-[#ebdbb2] mt-2">
+                    Charlas sobre Inteligencia Artificial.
+                  </p>
+                </div>
+
+                {/* EVENTO 2 */}
+                <div className="group relative bg-[#3c3836] p-3 border border-[#504945] hover:border-[#7e638e] transition-colors w-full md:w-[48%]">
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <div className="text-[#ebdbb2] font-bold">Mobile World Congress 2025</div>
+                      <div className="text-xs text-[#789949]">Asistente • Presencial</div>
+                    </div>
+                    <span className="text-2xl">🎫</span>
+                  </div>
+                  <p className="text-xs text-[#ebdbb2] mt-2">
+                    Diferentes novedades dentro del mundo de la informatica, sobre todo relacionado con la Inteligencia Artificial.
+                  </p>
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+        </Modal>
+
+        {/* VENTANA INICIO */}
+        <Modal
+          isOpen={showWelcome}
+          onClose={() => { }}
+          title="Start Game"
+        >
+          <div className="flex flex-col md:flex-row items-center gap-8 p-2">
+
+            {/* 1. IMAGEN (Izquierda) */}
+            <div className="shrink-0 relative group">
+              {/* Marco decorativo */}
+              <div className="absolute inset-0 border-4 border-[#7e638e] translate-x-2 translate-y-2 bg-[#1d2021]"></div>
+
+              {/* Tu foto pixel art */}
+              <img
+                src="avatar.png"
+                alt="Avatar Intro"
+                className="relative w-48 h-48 md:w-56 md:h-56 object-cover pixel-art border-4 border-[#ebdbb2] shadow-2xl z-10"
+              />
+            </div>
+
+            {/* 2. TEXTO Y TUTORIAL (Derecha) */}
+            <div className="text-center md:text-left space-y-4">
+              <h3 className="text-2xl text-[#b58fb6] font-bold">¡Hola, viajero!</h3>
+
+              <p className="text-[#a89984] text-lg leading-relaxed">
+                Bienvenido a mi pequeño rincón de internet. Este no es un portafolio normal; es mi habitación interactiva.
+              </p>
+
+              <div className="bg-[#32302f] p-4 border-l-4 border-[#789949] text-left">
+                <h4 className="text-[#789949] font-bold mb-2 text-sm uppercase tracking-wide">Tutorial:</h4>
+                <ul className="space-y-2 text-[#ebdbb2] text-sm">
+                  <li className="flex items-center gap-2">
+                    🖱️ <span className="opacity-80">Pasa el ratón para <strong>investigar</strong> objetos.</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    👆 <span className="opacity-80">Haz clic para <strong>abrir</strong> las secciones.</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    🎵 <span className="opacity-80">Interactua con el <strong>tocadiscos</strong> para ajustar la musica de fondo.</span>
+                  </li>
+                </ul>
               </div>
 
-              {/* EVENTO 2 */}
-              <div className="group relative bg-[#3c3836] p-3 border border-[#504945] hover:border-[#7e638e] transition-colors w-full md:w-[48%]">
-                <div className="flex justify-between items-start">
-                    <div>
-                        <div className="text-[#ebdbb2] font-bold">Talent Arena 2025</div>
-                        <div className="text-xs text-[#789949]">Asistente • Presencial</div>
-                    </div>
-                    <span className="text-2xl">🎫</span>
+              {/* BOTÓN DE EXPLORAR (Cierra el modal) */}
+              <button
+                onClick={() => {
+                  setShowWelcome(false);
+                  setIsPlaying(true);
+                }}
+                className="
+                 mt-4 w-full bg-[#7e638e] text-[#282828] font-bold py-3 px-6 text-xl 
+                 hover:bg-[#b58fb6] hover:scale-[1.02] hover:shadow-[0_0_15px_rgba(215,153,33,0.5)]
+                 transition-all border-b-4 border-[#594a66] active:border-b-0 active:translate-y-[4px]
+                 animate-pulse
+               "
+              >
+                EXPLORAR MI HABITACIÓN 🚀
+              </button>
+            </div>
+
+          </div>
+        </Modal>
+
+        {/* VENTANA TOCADISCOS */}
+        <Modal
+          isOpen={activeSection === 'Musica'}
+          onClose={() => setActiveSection(null)}
+          title="Estación de Audio"
+          noScroll= {true}
+        >
+          <div className="flex flex-fil items-center justify-around gap-6 p-4 m-16">
+
+            <div>
+              {/* 1. EL VINILO GIRATORIO Y VISUALIZADOR */}
+              <div className="relative m-10 group mt-2">
+
+                {/* Efecto de 'Glow' o brillo detrás del disco */}
+                <div className={`
+                absolute inset-0 bg-[#7e638e] rounded-full blur-2xl opacity-20 transform scale-110 transition-opacity duration-1000
+                ${isPlaying ? 'opacity-40' : 'opacity-10'}
+            `}></div>
+
+                {/* EL DISCO DE VINILO */}
+                {/* La clase 'animate-[spin_4s_linear_infinite]' hace que gire solo si isPlaying es true */}
+                <div
+                  className={`
+                 relative w-40 h-40 md:w-64 md:h-64 rounded-full 
+                 border-8 border-[#1d2021] bg-[#1d2021] shadow-[0_10px_30px_rgba(0,0,0,0.5)] overflow-hidden
+                 flex items-center justify-center
+                 transition-transform duration-700
+                 ${isPlaying ? 'animate-[spin_10s_linear_infinite]' : ''}
+               `}
+                >
+                  {/* Surcos del vinilo (Detalle estético) */}
+                  <div className="absolute inset-0 rounded-full border-[2px] border-[#282828] opacity-50 scale-90"></div>
+                  <div className="absolute inset-0 rounded-full border-[2px] border-[#282828] opacity-50 scale-75"></div>
+                  <div className="absolute inset-0 rounded-full border-[2px] border-[#282828] opacity-50 scale-50"></div>
+
+                  {/* PORTADA CENTRAL (Dinámica según el índice) */}
+                  <div className="w-24 h-24 rounded-full overflow-hidden border-4 border-[#7e638e] relative z-10 bg-[#282828]">
+                    <img
+                      src={PLAYLIST[currentTrackIndex].cover}
+                      alt="Album Cover"
+                      className="w-full h-full object-cover opacity-90"
+                    />
+                    {/* Brillo del vinilo sobre la pegatina */}
+                    <div className="absolute inset-0 bg-gradient-to-tr from-black/20 to-transparent"></div>
+                  </div>
                 </div>
-                <p className="text-xs text-[#ebdbb2] mt-2">
-                    Charlas sobre Inteligencia Artificial.
-                </p>
+
+                {/* BRAZO DEL TOCADISCOS */}
+                {/* Se mueve hacia el disco cuando suena, y se retira cuando para */}
+                <div className={`
+                absolute -top-4 -right-4 w-28 h-6 bg-[#928374] 
+                origin-top-right transition-transform duration-700 ease-in-out border-2 border-[#504945] rounded-full shadow-xl
+                z-20
+                ${isPlaying ? 'rotate-[30deg] translate-y-2' : 'rotate-0'}
+            `}>
+                  <div className="absolute left-1 top-0.5 w-4 h-4 bg-[#7e638e] rounded-full"></div> {/* Aguja */}
+                </div>
               </div>
-              
-              {/* EVENTO 2 */}
-              <div className="group relative bg-[#3c3836] p-3 border border-[#504945] hover:border-[#7e638e] transition-colors w-full md:w-[48%]">
-                <div className="flex justify-between items-start">
-                    <div>
-                        <div className="text-[#ebdbb2] font-bold">Mobile World Congress 2025</div>
-                        <div className="text-xs text-[#789949]">Asistente • Presencial</div>
-                    </div>
-                    <span className="text-2xl">🎫</span>
-                </div>
-                <p className="text-xs text-[#ebdbb2] mt-2">
-                    Diferentes novedades dentro del mundo de la informatica, sobre todo relacionado con la Inteligencia Artificial.
+
+              {/* 2. INFORMACIÓN DE LA PISTA (Dinámica) */}
+              <div className="text-center w-full space-y-1 h-20">
+                <h3 className="text-[#b58fb6] text-2xl font-bold font-pixel tracking-wide truncate">
+                  {PLAYLIST[currentTrackIndex].title}
+                </h3>
+                <p className="text-[#a89984] text-sm uppercase tracking-widest">
+                  {PLAYLIST[currentTrackIndex].artist}
                 </p>
+                {/* Pequeña barra de progreso visual (decorativa) */}
+                <div className="w-24 h-1 bg-[#3c3836] mx-auto mt-2 rounded-full overflow-hidden">
+                  <div className={`h-full bg-[#b58fb6] ${isPlaying ? 'animate-[width_3s_ease-in-out_infinite]' : 'w-0'}`}></div>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              {/* 3. CONTROLES DE REPRODUCCIÓN */}
+              <div className="flex items-center m-10 gap-6 bg-[#32302f] px-8 py-4 rounded-2xl border border-[#504945] shadow-inner">
+
+                {/* BOTÓN ANTERIOR */}
+                <button
+                  onClick={handlePrev}
+                  className="text-[#a89984] hover:text-[#ebdbb2] hover:scale-110 active:scale-95 transition-all"
+                  title="Anterior"
+                >
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M11 19V5l-9 7 9 7zm11 0V5l-9 7 9 7z" /></svg>
+                </button>
+
+                {/* PLAY / PAUSE CENTRAL */}
+                <button
+                  onClick={() => setIsPlaying(!isPlaying)}
+                  className="
+                  w-16 h-16 rounded-full bg-[#7e638e] text-[#282828] 
+                  flex items-center justify-center 
+                  hover:bg-[#b58fb6] hover:scale-105 hover:shadow-[0_0_15px_#b58fb6]
+                  active:scale-95 active:bg-[#594a66]
+                  transition-all shadow-lg border-2 border-[#594a66]
+                "
+                >
+                  {isPlaying ? (
+                    // Icono Pause
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" /></svg>
+                  ) : (
+                    // Icono Play (ligeramente desplazado para centrarlo visualmente)
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor" className="ml-1"><path d="M8 5v14l11-7z" /></svg>
+                  )}
+                </button>
+
+                {/* BOTÓN SIGUIENTE */}
+                <button
+                  onClick={handleNext}
+                  className="text-[#a89984] hover:text-[#ebdbb2] hover:scale-110 active:scale-95 transition-all"
+                  title="Siguiente"
+                >
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M4 19l9-7-9-7v14zm11 0h-2V5h2v14z" /></svg>
+                </button>
+
+              </div>
+              {/* 4. CONTROL DE VOLUMEN */}
+              <div className="w-full max-w-xs flex items-center gap-3 text-[#a89984] bg-[#32302f] p-2 rounded-lg border border-[#504945]">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon></svg>
+
+                <input
+                  type="range"
+                  min="0"
+                  max="1"
+                  step="0.05"
+                  value={volume}
+                  onChange={(e) => setVolume(parseFloat(e.target.value))}
+                  className="w-full accent-[#d79921] h-2 bg-[#1d2021] rounded-lg appearance-none cursor-pointer hover:accent-[#fabd2f]"
+                />
+
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07" /></svg>
               </div>
 
             </div>
-          </div>
 
-        </div>
-      </Modal>
+
+
+          </div>
+          {/* 5. LINK EXTERNO A SPOTIFY */}
+          <div className="-mt-16 text-xs text-[#928374] flex flex-col items-center gap-1">
+            <span>¿Te gusta esta vibe?</span>
+            <a
+              href="https://open.spotify.com/playlist/7xRd1QsdyyrKjzdgXmswRe?si=8878707f12bb4922"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 text-[#789949] hover:text-[#abcf5f] hover:underline transition-colors font-bold"
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.72 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z" /></svg>
+              ABRIR PLAYLIST REAL
+            </a>
+          </div>
+        </Modal>
 
       </div>
 
