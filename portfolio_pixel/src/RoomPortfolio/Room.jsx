@@ -77,7 +77,7 @@ export default function Room() {
           imagePath="./corcho.png"
           position={{ top: '24%', left: '20%', width: '11%', height: '6.5%' }}
           setHoveredItem={setHoveredItem}
-          onClick={() => alert("¡Aquí se abrirá la ventana de Estudios y Experiencia!")}
+          onClick={() => setActiveSection('Estudios y Experiencia')}
           zindex={1}
         />
 
@@ -452,6 +452,164 @@ export default function Room() {
 
           </div>
         </Modal>
+
+        {/* VENTANA TRAYECTORIA */}
+      <Modal 
+        isOpen={activeSection === 'Estudios y Experiencia'} 
+        onClose={() => setActiveSection(null)} 
+        title="Historial de Misiones"
+      >
+        <div className="flex flex-col gap-8">
+
+          {/* SECCIÓN 1: EXPERIENCIA LABORAL (Timeline) */}
+          <div>
+            <h3 className="text-[#b58fb6] text-xl font-bold mb-4 flex items-center gap-2">
+              <span>⚔️</span> Misiones Principales
+            </h3>
+            
+            {/* Contenedor de la línea de tiempo */}
+            <div className="border-l-2 border-[#504945] ml-3 space-y-8">
+              
+              {/* TRABAJO 1 */}
+              <div className="relative pl-8">
+                {/* El punto en la línea */}
+                <div className="absolute -left-[9px] top-1 w-4 h-4 bg-[#7e638e] rounded-full border-2 border-[#282828]"></div>
+                
+                <h4 className="text-[#ebdbb2] font-bold text-lg">QA Tester (Practicas DAM)</h4>
+                <div className="text-[#789949] text-sm mb-1">Empresa Inetum Tarragona | 2023 - 2024</div>
+                <p className="text-[#a89984] text-sm">
+                  Desarrollo de diferentes pruebas de Testeo usando Selenium con Java, se creo un "framework" propio para facilitar la ejecucion y comprovacion
+                  de los diferentes Tests.
+                  Tambien se realizo algun proyecto pequeño Full-Stack
+                </p>
+                {/* Etiquetas de tecnologías usadas */}
+                <div className="flex gap-2 mt-2">
+                  <span className="text-xs bg-[#32302f] px-2 py-0.5 rounded text-[#ebdbb2] border border-[#504945]">Selenium</span>
+                  <span className="text-xs bg-[#32302f] px-2 py-0.5 rounded text-[#ebdbb2] border border-[#504945]">Java</span>
+                  <span className="text-xs bg-[#32302f] px-2 py-0.5 rounded text-[#ebdbb2] border border-[#504945]">Appium</span>
+                </div>
+              </div>
+
+              {/* TRABAJO 2 */}
+              <div className="relative pl-8">
+                <div className="absolute -left-[9px] top-1 w-4 h-4 bg-[#7e638e] rounded-full border-2 border-[#282828]"></div>
+                
+                <h4 className="text-[#ebdbb2] font-bold text-lg">Gestion Tienda Online (Prácticas DAW)</h4>
+                <div className="text-[#789949] text-sm mb-1">Regalogar Reus | 2022</div>
+                <p className="text-[#a89984] text-sm">
+                  Mantenimiento de componentes UI y gestion de una tienda Online de electrodomesticos
+                </p>
+              </div>
+
+            </div>
+          </div>
+
+          <hr className="border-[#504945]" />
+
+          {/* SECCIÓN 2: ESTUDIOS (Grid de Cartas) */}
+          <div>
+            <h3 className="text-[#b58fb6] text-xl font-bold mb-4 flex items-center gap-2">
+              <span>📜</span> Entrenamiento
+            </h3>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              
+              {/* ESTUDIO 1 */}
+              <div className="bg-[#32302f] p-4 border-l-4 border-[#abcf5f]">
+                <div className="text-[#ebdbb2] font-bold">Grado en Ingeniería Informática</div>
+                <div className="text-sm text-[#789949]">Universidad Rovira Virgili (Tarragona) | En curso</div>
+                <div className="text-xs text-[#a89984] mt-1">Especialidad en Ingeniería del Software.</div>
+              </div>
+
+              {/* ESTUDIO 2 */}
+              <div className="bg-[#32302f] p-4 border-l-4 border-[#7e638e]">
+                <div className="text-[#ebdbb2] font-bold">CFGS Desarrollo Multiplataforma (DAM)</div>
+                <div className="text-sm text-[#789949]">Instituto Baix Camp (Reus) | 2022 - 2024</div>
+                <div className="text-xs text-[#a89984] mt-1">Nota media: 8.3</div>
+              </div>
+
+              {/* ESTUDIO 3 */}
+              <div className="bg-[#32302f] p-4 border-l-4 border-[#7e638e]">
+                <div className="text-[#ebdbb2] font-bold">CFGS Desarrollo Web (DAW)</div>
+                <div className="text-sm text-[#789949]">Instituto Baix Camp (Reus) | 2021 - 2023</div>
+                <div className="text-xs text-[#a89984] mt-1">Nota media: 7.7</div>
+              </div>
+
+            </div>
+          </div>
+
+          <hr className="border-[#504945]" />
+
+          {/* SECCIÓN 3: EVENTOS / HACKATHONS (Estilo Polaroid o Badge) */}
+          <div>
+            <h3 className="text-[#b58fb6] text-xl font-bold mb-4 flex items-center gap-2">
+              <span>🏆</span> Eventos y Logros
+            </h3>
+
+            <div className="flex flex-wrap gap-3">
+              
+              {/* EVENTO 1 */}
+              <div className="group relative bg-[#3c3836] p-3 border border-[#504945] hover:border-[#7e638e] transition-colors w-full md:w-[48%]">
+                <div className="flex justify-between items-start">
+                    <div>
+                        <div className="text-[#ebdbb2] font-bold">Hackathon HackEPS 2025</div>
+                        <div className="text-xs text-[#789949]">Participante • Lleida</div>
+                    </div>
+                    <span className="text-2xl">💻​</span>
+                </div>
+                <p className="text-xs text-[#ebdbb2] mt-2">
+                    Creamos una app de gestión del transporte de cerdos con los mataderos y granjas.
+                </p>
+              </div>
+
+              {/* EVENTO 1 */}
+              <div className="group relative bg-[#3c3836] p-3 border border-[#504945] hover:border-[#7e638e] transition-colors w-full md:w-[48%]">
+                <div className="flex justify-between items-start">
+                    <div>
+                        <div className="text-[#ebdbb2] font-bold">Hackathon StrongHoldPI 2025</div>
+                        <div className="text-xs text-[#789949]">Participante • Tarragona</div>
+                    </div>
+                    <span className="text-2xl">💻​</span>
+                </div>
+                <p className="text-xs text-[#ebdbb2] mt-2">
+                    Hicimos un capture the flag utilizando Rasperris.
+                </p>
+              </div>
+
+              {/* EVENTO 2 */}
+              <div className="group relative bg-[#3c3836] p-3 border border-[#504945] hover:border-[#7e638e] transition-colors w-full md:w-[48%]">
+                <div className="flex justify-between items-start">
+                    <div>
+                        <div className="text-[#ebdbb2] font-bold">Talent Arena 2025</div>
+                        <div className="text-xs text-[#789949]">Asistente • Presencial</div>
+                    </div>
+                    <span className="text-2xl">🎫</span>
+                </div>
+                <p className="text-xs text-[#ebdbb2] mt-2">
+                    Charlas sobre Inteligencia Artificial.
+                </p>
+              </div>
+              
+              {/* EVENTO 2 */}
+              <div className="group relative bg-[#3c3836] p-3 border border-[#504945] hover:border-[#7e638e] transition-colors w-full md:w-[48%]">
+                <div className="flex justify-between items-start">
+                    <div>
+                        <div className="text-[#ebdbb2] font-bold">Mobile World Congress 2025</div>
+                        <div className="text-xs text-[#789949]">Asistente • Presencial</div>
+                    </div>
+                    <span className="text-2xl">🎫</span>
+                </div>
+                <p className="text-xs text-[#ebdbb2] mt-2">
+                    Diferentes novedades dentro del mundo de la informatica, sobre todo relacionado con la Inteligencia Artificial.
+                </p>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </Modal>
+
       </div>
 
 
