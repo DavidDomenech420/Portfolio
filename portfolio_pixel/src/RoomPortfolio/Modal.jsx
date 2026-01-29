@@ -18,7 +18,7 @@ export default function Modal({
       {/* 2. LA VENTANA RETRO */}
       <div 
         className="
-          relative w-full max-w-5xl bg-[#282828] 
+          relative w-[95%] md:w-full md:max-w-5xl bg-[#282828] 
           border-4 border-[#7e638e] 
           text-[#789949] p-6 shadow-2xl
           font-pixel text-xl
