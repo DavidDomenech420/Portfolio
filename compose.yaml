@@ -1,0 +1,21 @@
+version: "3.9"
+
+services:
+  portfolio:
+    build:
+      context: ./portfolio_pixel   # Carpeta donde está tu Dockerfile de Angular
+    expose:
+      - "80"           # Mapeo: puerto host 4200 → Nginx puerto 80
+    environment:
+      - VIRTUAL_HOST=daviddomenech.duckdns.org
+      - LETSENCRYPT_HOST=daviddomenech.duckdns.org
+      - LETSENCRYPT_EMAIL=tuemail@dominio.com
+    networks:
+      - proxy-net
+
+volumes:
+ db_data:
+
+networks:
+  proxy-net:
+    external: true
