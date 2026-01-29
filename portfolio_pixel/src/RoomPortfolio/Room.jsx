@@ -770,7 +770,7 @@ export default function Room() {
               <h3 className="text-2xl text-[#b58fb6] font-bold">¡Hola, viajero!</h3>
 
               <p className="text-[#a89984] text-lg leading-relaxed">
-                Bienvenido a mi pequeño rincón de internet. Este no es un portafolio normal; es mi habitación interactiva.
+                Bienvenido a mi pequeño rincón de internet. Este no es un portafolio normal; es mi habitación interactiva. Investiga los diferentes objetos para descubrir cosas sobre mi.
               </p>
 
               <div className="bg-[#32302f] p-4 border-l-4 border-[#789949] text-left">
@@ -801,7 +801,7 @@ export default function Room() {
                  animate-pulse
                "
               >
-                EXPLORAR MI HABITACIÓN 🚀
+                EXPLORAR MI HABITACIÓN 🗺️​
               </button>
             </div>
 
@@ -861,7 +861,7 @@ export default function Room() {
                 absolute -top-4 -right-4 w-28 h-6 bg-[#928374] 
                 origin-top-right transition-transform duration-700 ease-in-out border-2 border-[#504945] rounded-full shadow-xl
                 z-20
-                ${isPlaying ? 'rotate-[30deg] translate-y-2' : 'rotate-0'}
+                ${!isPlaying ? 'rotate-[30deg] translate-y-2' : 'rotate-0'}
             `}>
                   <div className="absolute left-1 top-0.5 w-4 h-4 bg-[#7e638e] rounded-full"></div> {/* Aguja */}
                 </div>
