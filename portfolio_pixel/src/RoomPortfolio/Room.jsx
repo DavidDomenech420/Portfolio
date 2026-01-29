@@ -79,6 +79,14 @@ const PLAYLIST = [
   },
 ];
 
+const MENU_ITEMS = [
+  { id: 'Sobre Mi', label: 'PERSONAJE', icon: '👤' },
+  { id: 'Estudios y Experiencia', label: 'MISIONES', icon: '⚔️' },
+  { id: 'Proyectos', label: 'PROYECTOS', icon: '💾' },
+  { id: 'Musica', label: 'MUSICA', icon: '🎵' },
+  { id: 'Redes Sociales', label: 'CONTACTO', icon: '📡' },
+];
+
 export default function Room() {
 
   // hoveredItem -> Variable que puede ser el Ordenador, Tocadiscos, Diario, etc.
@@ -86,6 +94,7 @@ export default function Room() {
   const [activeSection, setActiveSection] = useState(null);
   const [copied, setCopied] = useState(false)
   const [showWelcome, setShowWelcome] = useState(true);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const email = "daviddomenech420@gmail.com";
 
   const handleCopyEmail = () => {
@@ -93,6 +102,12 @@ export default function Room() {
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
+
+  const handleMenuNavigation = (sectionId) => {
+    setIsMenuOpen(false); // 1. Cierra el menú lateral
+    setActiveSection(sectionId); // 2. Abre el modal correspondiente
+  };
+
 
   // Parte de Audio
   // --- SISTEMA DE AUDIO ---
@@ -801,7 +816,7 @@ export default function Room() {
                  animate-pulse
                "
               >
-                EXPLORAR MI HABITACIÓN 🗺️​
+                EXPLORAR MI HABITACIÓN 🗺️
               </button>
             </div>
 
@@ -813,7 +828,7 @@ export default function Room() {
           isOpen={activeSection === 'Musica'}
           onClose={() => setActiveSection(null)}
           title="Estación de Audio"
-          noScroll= {true}
+          noScroll={true}
         >
           <div className="flex flex-fil items-center justify-around gap-6 p-4 m-16">
 
@@ -961,6 +976,77 @@ export default function Room() {
             </a>
           </div>
         </Modal>
+
+        {/* --- NAVEGACIÓN (Menú Lateral) --- */}
+
+        {/* 1. BOTÓN HAMBURGUESA (Siempre visible) */}
+        {!showWelcome && (
+        <button
+          onClick={() => setIsMenuOpen(true)}
+          className="fixed top-4 left-4 z-50 bg-[#7e638e] p-2 rounded border-2 border-[#594a66] hover:scale-110 transition-transform shadow-lg group"
+          title="Abrir Menú"
+        >
+          <div className="space-y-1.5">
+            <span className="block w-6 h-0.5 bg-[#282828] group-hover:w-8 transition-all"></span>
+            <span className="block w-6 h-0.5 bg-[#282828] group-hover:w-8 transition-all"></span>
+            <span className="block w-6 h-0.5 bg-[#282828] group-hover:w-8 transition-all"></span>
+          </div>
+        </button>
+        )}
+
+        {/* 2. OVERLAY (Fondo oscuro al abrir menú) */}
+        {/* Si haces clic fuera del menú, se cierra */}
+        {isMenuOpen && (
+          <div
+            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[60] animate-fadeIn"
+            onClick={() => setIsMenuOpen(false)}
+          ></div>
+        )}
+
+        {/* 3. SIDEBAR (El menú en sí) */}
+        <div className={`
+        fixed top-0 left-0 h-full w-64 bg-[#1d2021] border-r-4 border-[#594a66] z-[70] 
+        transform transition-transform duration-300 ease-out shadow-2xl flex flex-col
+        ${isMenuOpen ? 'translate-x-0' : '-translate-x-full'}
+      `}>
+
+          {/* Cabecera del Menú */}
+          <div className="p-6 bg-[#282828] border-b-2 border-[#504945] flex justify-between items-center">
+            <h2 className="text-[#789949] font-bold text-xl font-pixel tracking-widest">PAUSE MENU</h2>
+            <button
+              onClick={() => setIsMenuOpen(false)}
+              className="text-[#fb4934] font-bold text-xl hover:scale-125 transition-transform"
+            >
+              ✕
+            </button>
+          </div>
+
+          {/* Lista de Opciones */}
+          <div className="flex-1 p-4 space-y-4 overflow-y-auto">
+            {MENU_ITEMS.map((item) => (
+              <button
+                key={item.id}
+                onClick={() => handleMenuNavigation(item.id)}
+                className="
+                w-full text-left p-3 rounded 
+                text-[#ebdbb2] hover:text-[#282828] hover:bg-[#b58fb6] 
+                border-2 border-transparent hover:border-[#7e638e]
+                transition-all group flex items-center gap-4
+              "
+              >
+                <span className="text-xl group-hover:scale-125 transition-transform">{item.icon}</span>
+                <span className="font-bold tracking-wide">{item.label}</span>
+              </button>
+            ))}
+          </div>
+
+          {/* Pie del Menú (Footer) */}
+          <div className="p-4 border-t border-[#504945] text-center">
+            <p className="text-[#a89984] text-xs">David Portfolio v1.0</p>
+            <div className="text-[#928374] text-[10px] mt-1">PRESS START</div>
+          </div>
+
+        </div>
 
       </div>
 
