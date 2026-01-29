@@ -1175,7 +1175,7 @@ export default function Room() {
           </div>
 
           {/* 3. PERSONAL / HOBBIES (El toque humano) */}
-          <div className="bg-[#3c3836] p-4 border border-[#504945]">
+          <div className="hidden md:block bg-[#3c3836] p-4 border border-[#504945]">
             <h4 className="text-[#b58fb6] text-xl mb-2 border-b border-[#504945]">Fuera del Código</h4>
             <p className="text-[#a89984] text-lg">
               Como se puede observar paso parte de mi tiempo escuchando música, jugando a gran variedad de videojuegos y también leyendo diferentes libros de fantasía. <br /> <br />
@@ -1215,7 +1215,7 @@ export default function Room() {
           {/* PROYECTO 1 */}
           <a href="#" target="_blank" className="block group">
             <div className="bg-[#3c3836] border-2 border-[#504945] hover:border-[#b58fb6] transition-colors h-full flex flex-col">
-              <div className="w-full h-40 border-b-2 border-[#504945] overflow-hidden relative">
+              <div className="hidden md:block w-full h-40 border-b-2 border-[#504945] overflow-hidden relative">
                 <img
                   src="/preview_portfolio.png"
                   alt="Preview"
@@ -1276,7 +1276,7 @@ export default function Room() {
           {/* PROYECTO 2 */}
           <a href="https://deskhub.duckdns.org" target="_blank" className="block group h-full">
             <div className="bg-[#3c3836] border-2 border-[#504945] hover:border-[#b58fb6] transition-colors h-full flex flex-col">
-              <div className="w-full h-40 border-b-2 border-[#504945] overflow-hidden relative">
+              <div className="hidden md:block w-full h-40 border-b-2 border-[#504945] overflow-hidden relative">
                 <img
                   src="/preview_deskhub.png"
                   alt="Preview"
