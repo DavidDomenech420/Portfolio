@@ -638,7 +638,7 @@ export default function Room() {
               <h5 className="text-[#7e638e] text-lg mt-1 mb-1 pb-0.5">BackEnd</h5>
               <div className="flex flex-wrap gap-1">
                 {/* Lista de tecnologías como etiquetas */}
-                {['Python', 'Java', 'C', 'Kotlin', 'PostgreSQL', 'FireBase'].map((skill) => (
+                {['Python', 'Java', 'C', 'Flutter', 'PostgreSQL', 'SupaBase'].map((skill) => (
                   <span key={skill} className="bg-[#282828] text-[#789949] px-2 py-0.5 text-sm border border-[#504945]">
                     {skill}
                   </span>
@@ -826,6 +826,14 @@ export default function Room() {
             <h3 className="text-2xl text-[#b58fb6] mb-2 group-hover:underline">Megadex (En construccion)</h3>
             <p className="text-[#a89984] leading-tight">
               Ten a tu disposicion de forma rapida y accesible toda la informacion de todos los juegos de Pokemon
+            </p>
+          </div>
+
+          {/* PROYECTO 3 */}
+          <div className="bg-[#3c3836] border-2 border-[#504945] p-4 opacity-75">
+            <h3 className="text-2xl text-[#b58fb6] mb-2 group-hover:underline">KanTask (En construccion)</h3>
+            <p className="text-[#a89984] leading-tight">
+              Proyecto de entreno con Flutter. Ten a tu disposicion tableros estilo Kanban para organizar tus proyectos en solitario o con tu equipo de trabajo
             </p>
           </div>
 
@@ -1074,7 +1082,7 @@ export default function Room() {
               <div className="group relative bg-[#3c3836] p-3 border border-[#504945] hover:border-[#7e638e] transition-colors w-full md:w-[48%]">
                 <div className="flex justify-between items-start">
                   <div>
-                    <div className="text-[#ebdbb2] font-bold">Talent Arena 2025</div>
+                    <div className="text-[#ebdbb2] font-bold">Talent Arena 2026</div>
                     <div className="text-xs text-[#789949]">Asistente • Presencial</div>
                   </div>
                   <span className="text-2xl">🎫</span>
@@ -1088,7 +1096,7 @@ export default function Room() {
               <div className="group relative bg-[#3c3836] p-3 border border-[#504945] hover:border-[#7e638e] transition-colors w-full md:w-[48%]">
                 <div className="flex justify-between items-start">
                   <div>
-                    <div className="text-[#ebdbb2] font-bold">Mobile World Congress 2025</div>
+                    <div className="text-[#ebdbb2] font-bold">Mobile World Congress 2026</div>
                     <div className="text-xs text-[#789949]">Asistente • Presencial</div>
                   </div>
                   <span className="text-2xl">🎫</span>
